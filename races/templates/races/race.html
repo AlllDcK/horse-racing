@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Скачки</title>
+    <link rel="stylesheet"
+      href="{% static 'races/css/style.css' %}">
+</head>
+
+
+<body>
+<div class="container">
+    <h1>🐎 Скачки</h1>
+
+    <div class="balance">
+        💰 Баланс: {{ balance }}
+    </div>
+
+    <div class="buttons">
+        <form action="{% url 'deposit' %}" method="post">
+            {% csrf_token %}
+            <input type="number" name="amount" placeholder="Сумма пополнения">
+            <button type="submit">Пополнить</button>
+        </form>
+
+        <form action="{% url 'withdraw' %}" method="post">
+            {% csrf_token %}
+            <input type="number" name="amount" placeholder="Сумма вывода">
+            <button type="submit">Вывести</button>
+        </form>
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Выйти</button>
+        </form>
+    </div>
+
+    <hr>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <select name="horse_id">
+            {% for horse, odd in odds_list %}
+            <option value="{{ horse.id }}">
+                {{ horse.name }} (x{{ odd }})
+            </option>
+            {% endfor %}
+        </select>
+
+        <input type="number" name="amount" placeholder="Ставка">
+
+        <br>
+
+        <button type="submit">🎮 СТАРТ ГОНКИ</button>
+    </form>
+
+    <div id="race-track"
+     data-winner="{{ winner.id }}">
+        {% for horse, odd in odds_list %}
+        <div class="lane">
+            <div style="text-align: left; font-size: 0.9em; margin-bottom: 2px;">
+                🐎 {{ horse.name }}
+            </div>
+            <div class="track">
+                <div class="finish-line"></div>
+                <div class="horse-runner" id="horse-{{ horse.id }}">🐎</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <hr>
+
+    <h3>Участники:</h3>
+    {% for horse, odd in odds_list %}
+    <div class="horse">
+        🐎 {{ horse.name }} — <b>x{{ odd }}</b>
+    </div>
+    {% endfor %}
+
+    {% if message %}
+    <h2>{{ message }}</h2>
+    {% endif %}
+
+    {% if winner %}
+    <div class="winner">
+        🏆 Победитель: {{ winner.name }}
+    </div>
+    {% endif %}
+</div>
+<hr>
+
+<h3>📜 История ставок</h3>
+
+{% for bet in bets %}
+    <div class="horse">
+        🐎 {{ bet.horse.name }} |
+        💰 {{ bet.amount }} →
+
+        {% if bet.is_win %}
+            <span style="color:lightgreen;">
+                +{{ bet.win_amount }}
+            </span>
+        {% else %}
+            <span style="color:red;">
+                проигрыш
+            </span>
+        {% endif %}
+    </div>
+{% empty %}
+    <p>Ставок пока нет</p>
+{% endfor %}
+<script src="{% static 'races/js/races.js' %}"></script>
+</body>
+</html>
