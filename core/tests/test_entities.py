@@ -11,12 +11,12 @@ class HorseEntityTest(TestCase):
         horse = Horse(
             id=1,
             name="Thunder",
-            speed=95
+            base_speed=95
         )
 
         self.assertEqual(horse.id, 1)
         self.assertEqual(horse.name, "Thunder")
-        self.assertEqual(horse.speed, 95)
+        self.assertEqual(horse.base_speed, 95)
 
 
 class PlayerEntityTest(TestCase):
@@ -45,7 +45,7 @@ class BetEntityTest(TestCase):
         horse = Horse(
             id=1,
             name="Thunder",
-            speed=95
+            base_speed=95
         )
 
         bet = Bet(

@@ -18,7 +18,7 @@ class HorseRepository:
             Horse(
                 id=h.id,
                 name=h.name,
-                speed=h.base_speed
+                base_speed=h.base_speed
             )
             for h in horses
         ]
@@ -61,19 +61,17 @@ class BetRepository:
         ).select_related('horse').order_by('-created_at')
 
         return [
-
             Bet(
                 player=None,
                 horse=Horse(
                     id=bet.horse.id,
                     name=bet.horse.name,
-                    speed=bet.horse.base_speed
+                    base_speed=bet.horse.base_speed
                 ),
                 amount=bet.amount,
                 is_win=bet.is_win,
                 win_amount=bet.win_amount,
                 created_at=bet.created_at
             )
-
             for bet in bets
         ]
