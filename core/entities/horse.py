@@ -4,3 +4,5 @@ class Horse:
         self.id = id
         self.name = name
         self.base_speed = base_speed
+
+
