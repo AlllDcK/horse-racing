@@ -6,7 +6,7 @@ pipeline {
 
         stage('Clone') {
             steps {
-                git 'https://github.com/AlllDcK/horse-racing'
+                git 'https://github.com/AlllDcK/horse-racing.git'
             }
         }
 
@@ -18,20 +18,16 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh 'python manage.py test'
+                sh 'docker run --rm horse_racing python manage.py test'
             }
         }
 
         stage('Run Container') {
             steps {
-                sh 'docker stop horse_racing_container || true'
-                sh 'docker rm horse_racing_container || true'
-
                 sh '''
-                docker run -d \
-                --name horse_racing_container \
-                -p 8000:8000 \
-                horse_racing
+                docker stop horse_racing_container || true
+                docker rm horse_racing_container || true
+                docker run -d --name horse_racing_container -p 8000:8000 horse_racing
                 '''
             }
         }
