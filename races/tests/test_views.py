@@ -22,12 +22,12 @@ class RaceViewTest(TestCase):
 
         self.horse1 = Horse.objects.create(
             name="Thunder",
-            speed=90
+            base_speed=90
         )
 
         self.horse2 = Horse.objects.create(
             name="Rocket",
-            speed=80
+            base_speed=80
         )
 
     def test_redirect_if_not_logged_in(self):
