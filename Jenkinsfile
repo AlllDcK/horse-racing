@@ -24,7 +24,15 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 8000:8000 horse_racing'
+                sh 'docker stop horse_racing_container || true'
+                sh 'docker rm horse_racing_container || true'
+
+                sh '''
+                docker run -d \
+                --name horse_racing_container \
+                -p 8000:8000 \
+                horse_racing
+                '''
             }
         }
     }
